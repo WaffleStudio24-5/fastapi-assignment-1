@@ -8,10 +8,10 @@ from src.main import user_db, app
 
 @pytest.fixture
 def client() -> Generator[TestClient, None, None]:
+    user_db.clear()
     with TestClient(app, raise_server_exceptions=False) as client:
         yield client
-    
-    client.close()
+    user_db.clear()
 
 
 @pytest.fixture
@@ -65,5 +65,4 @@ def client_with_multiple_users() -> Generator[TestClient, None, None]:
             }
             client.post("/api/users/", json=req)
         yield client
-    
-    client.close()
+    user_db.clear()
